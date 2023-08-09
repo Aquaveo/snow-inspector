@@ -7,7 +7,7 @@ class SnowInspector(TethysAppBase):
     """
 
     name = 'Snow Inspector'
-    index = 'snow_inspector:home'
+    index = 'home'
     icon = 'snow_inspector/images/icon.gif'
     package = 'snow_inspector'
     root_url = 'snow-inspector'
