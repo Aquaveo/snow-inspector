@@ -55,7 +55,7 @@ $(document).ready(function() {
 		if (urlParams.length < 2) {
 			if (document.referrer == "https://apps.hydroshare.org/apps/") {
 				$("#extra-buttons").append(
-					'<a class="btn btn-default btn-sm" href="https://apps.hydroshare.org/apps/">Return to HydroShare Apps</a>'
+					'<a class="btn btn-outline-secondary btn-sm" href="https://apps.hydroshare.org/apps/">Return to HydroShare Apps</a>'
 				)
 			}
 			popupDiv.modal("show")

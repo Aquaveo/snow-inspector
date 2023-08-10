@@ -15,12 +15,12 @@
 {% endblock %} {% block app_navigation_items %}
 
 <!--    Change the button type. Clicking within the button outside the text did nothing.
-<li><button type="button" class="btn btn-default">
+<li><button type="button" class="btn btn-outline-secondary">
         <a href="{% url 'snow_inspector:home' %}{{map_url}}">Change Snow Location</a>
         </button>
     </li> -->
 <br />
-<a class="btn btn-default" href="{% url 'snow_inspector:home' %}{{map_url}}"
+<a class="btn btn-outline-secondary" href="{% url 'snow_inspector:home' %}{{map_url}}"
   >Change Dates, Location & Layer</a
 >
 <!-- End of changes -->
@@ -127,11 +127,11 @@
 </div>
 
 {% endblock %} {% block app_actions %}
-<a class="btn btn-default" href="{% url 'snow_inspector:home' %}{{map_url}}"
+<a class="btn btn-outline-secondary" href="{% url 'snow_inspector:home' %}{{map_url}}"
   >Back</a
 >
 
-<!--<a name="btnUpload" class="btn btn-default" id="btnUpload" data-bs-toggle="modal" data-bs-target="#hydroshare-modal" role="button">
+<!--<a name="btnUpload" class="btn btn-outline-secondary" id="btnUpload" data-bs-toggle="modal" data-bs-target="#hydroshare-modal" role="button">
             <span class="glyphicon hydroshare" aria-hidden="true"></span>
             Upload to HydroShare
   </a>-->
@@ -140,7 +140,7 @@
   id="waterml-link"
   target="_blank"
   href="{% url 'snow_inspector:waterml' %}{{waterml_url}}"
-  class="btn btn-default"
+  class="btn btn-outline-secondary"
   >Get WaterML</a
 >
 
@@ -213,7 +213,7 @@
         <div id="footer-buttons" class="col-md-4">
           <button
             type="button"
-            class="btn btn-default footer"
+            class="btn btn-outline-secondary footer"
             data-bs-dismiss="modal"
           >
             Close
