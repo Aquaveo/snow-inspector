@@ -46,12 +46,9 @@
 </form>
 {% endblock %} 
 
-{% block app_content_wrapper_override %} 
-{% include "snow_inspector/welcome_modal.html" %} 
-{{block.super}} 
-{% endblock %} 
 
 {% block app_content %}
+
 <p style="display: inline">
   Click on the map to select location. Then click on the "Retrieve Snow Data"
   button to show data history.

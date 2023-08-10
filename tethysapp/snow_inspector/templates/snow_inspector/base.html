@@ -25,7 +25,6 @@ Snow Inspector
 >
   <a
     data-bs-toggle="modal"
-    data-bs-placement="bottom"
     data-bs-target="#welcome-popup"
     title="Instructions"
     style="cursor: pointer"
@@ -57,4 +56,7 @@ Snow Inspector
 <li class="nav-item"><a class="nav-link" href="">Get Started</a></li>
 {% endblock %}
 
-
+{% block app_content_wrapper_override %} 
+{% include "snow_inspector/welcome_modal.html" %} 
+{{block.super}} 
+{% endblock %} 

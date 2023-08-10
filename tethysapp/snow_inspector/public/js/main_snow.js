@@ -433,14 +433,13 @@ function add_snow_pixels_to_map(map, map_date, zoom, layer, level) {
         "&date=" +
         map_date
     log(pixel_url)
-    /*var pixel_source = new ol.source.Vector({
+
+    // MIGRATION NOTES 2
+    //https://github.com/openlayers/openlayers/issues/3526
+    var pixel_source = new ol.source.Vector({
+        projection: "EPSG:3857",
         url: pixel_url,
         format: new ol.format.GeoJSON()
-    });*/
-
-    var pixel_source = new ol.source.GeoJSON({
-        projection: "EPSG:3857",
-        url: pixel_url
     })
 
     if (typeof pixelBoundaries === "undefined") {
