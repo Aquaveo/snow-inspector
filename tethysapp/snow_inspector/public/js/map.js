@@ -14,27 +14,48 @@ var resolutions = [
 var matrix_set = "500m"
 var matrx_ids = [0, 1, 2, 3, 4, 5, 6, 7]
 var button1 = document.createElement("IMG")
-$(document).ready(function() {
-	//added custom control
 
-	app.CustomToolbarControl = function() {
-		button1.setAttribute(
-			"src",
-			"https://raw.githubusercontent.com/FennaHD/snow-inspector/master/" +
-				"tethysapp-snow_inspector/tethysapp/snow_inspector/public/images/Snow%20Cover%20Legend.png"
-		)
-		//button1.innerHTML = 'some button';
-
+//MIGRATION NOTE # 1
+class CustomToolbarControl extends ol.control.Control {
+	/**
+	 * @param {Object} [opt_options] Control options.
+	 */
+	constructor(opt_options) {
 		var element = document.createElement("div")
 		element.className = "ol-mycontrol"
 		element.appendChild(button1)
-
-		ol.control.Control.call(this, {
-			element: element
-		})
+  
+		super({
+			element: element,
+		});
+  
 	}
+  
+  }
 
-	ol.inherits(app.CustomToolbarControl, ol.control.Control)
+$(document).ready(function() {
+	//added custom control
+
+
+	app.CustomToolbarControl = new CustomToolbarControl()
+	// app.CustomToolbarControl = function() {
+	// 	button1.setAttribute(
+	// 		"src",
+	// 		"https://raw.githubusercontent.com/FennaHD/snow-inspector/master/" +
+	// 			"tethysapp-snow_inspector/tethysapp/snow_inspector/public/images/Snow%20Cover%20Legend.png"
+	// 	)
+	// 	//button1.innerHTML = 'some button';
+
+	// 	var element = document.createElement("div")
+	// 	element.className = "ol-mycontrol"
+	// 	element.appendChild(button1)
+
+	// 	new ol.control.Control.call(this, {
+	// 		element: element
+	// 	})
+	// }
+	// ol_ext_inherits(app.CustomToolbarControl, ol.control.Control)
+	// ol.inherits(app.CustomToolbarControl, ol.control.Control)
 	//end of custom control
 
 	var lat = 40.238
@@ -415,7 +436,7 @@ $(document).ready(function() {
 			openstreet_layer,
 			modislayer /*,esri_layer, modislayer, mapQuest_layer*/
 		],
-		controls: ol.control.defaults().extend([new app.CustomToolbarControl()]),
+		controls: ol.control.defaults.defaults().extend([new CustomToolbarControl()]),
 		target: document.getElementById("map_view"),
 		//renderer: ['canvas', 'dom'],
 		view: new ol.View({

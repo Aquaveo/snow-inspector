@@ -8,11 +8,10 @@
 <link href="{% static 'snow_inspector/css/main.css' %}" rel="stylesheet" />
 {% endblock %} 
 
-{% block app_icon %} {# The path you provided in your app.py is
-accessible through the tethys_app.icon context variable #}
+{% block app_icon %} 
+
 <img src="{% static tethys_app.icon %}" />
-{% endblock %} {# The name you provided in your app.py is accessible through the
-tethys_app.name context variable #} 
+{% endblock %}
 {% block app_title %}
 Snow Inspector
 {% endblock %} 

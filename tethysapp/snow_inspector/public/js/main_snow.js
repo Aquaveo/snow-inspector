@@ -777,7 +777,7 @@ $(document).ready(function() {
     var snow_point_layer = make_point_layer()
     var map = new ol.Map({
         layers: [base_layer, snow_point_layer],
-        controls: ol.control.defaults(),
+        controls: ol.control.defaults.defaults(),
         target: "detail-map",
         view: new ol.View({
             center: [0, 0],

@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="modal fade" id="welcome-popup" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Welcome to the Snow Inspector!</h4>
@@ -40,15 +40,15 @@
               Refer to the following video for more detailed instructions:
             </p>
             <iframe
-              width="400"
-              height="225"
+              width="100%"
+              height="350px"
               src="https://www.youtube.com/embed/Ew8krANGb0E"
               frameborder="0"
               allow="autoplay; encrypted-media"
               allowfullscreen
             ></iframe>
-            <h9
-              ><br /><br />
+            <p>
+              <br /><br />
               We acknowledge the use of imagery provided by services from the
               <a
                 href="https://earthdata.nasa.gov/about/science-system-description/eosdis-components/global-imagery-browse-services-gibs"
@@ -60,7 +60,7 @@
               <a href="https://earthdata.nasa.gov" target="_blank"
                 >https://earthdata.nasa.gov</a
               >) with funding provided by NASA/HQ.<br />
-            </h9>
+            </p>
             <br />
             <p>
               Kadlec, Jiří, A. Woodruff Miller, and Daniel P. Ames. "Extracting
@@ -95,6 +95,7 @@
           >
           <img src="{% static 'snow_inspector/images/byu-medallion.png' %}" />
         </div>
+        
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
