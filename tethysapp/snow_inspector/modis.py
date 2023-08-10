@@ -7,6 +7,7 @@ import urllib.parse
 
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
+from tethys_sdk.routing import controller
 
 """
 Convert (lat, lon) to the proper tile number
@@ -220,7 +221,10 @@ def format_time_series(startDate, ts, nodata_value):
 
     return formatted_ts
 
-
+@controller(
+    name='pixel',
+    url='snow-inspector/pixel',
+)
 def get_data_for_pixel(request):
     """
     Controller that will show the snow data for a specific pixel in WaterML format
@@ -255,7 +259,10 @@ def get_data_for_pixel(request):
     xmlResponse['Content-Type'] = 'application/xml;'
     return xmlResponse
 
-
+@controller(
+    name='snow_data',
+    url='snow-inspector/snow_data',
+)
 def get_data_json(request):
     """
     Controller that will show the snow data in Json format
@@ -290,7 +297,10 @@ def get_data_json(request):
     ts = getTimeSeries(lat, lon, startdate, enddate, zoom, layer, level)
     return JsonResponse({"query": context, "tile": tile, "xpixel": xpixel, "ypixel": ypixel, "data": ts})
 
-
+@controller(
+    name='waterml',
+    url='snow-inspector/waterml',
+)
 def get_data_waterml(request):
     """
     Controller that will show the data in WaterML 1.1 format
@@ -422,6 +432,10 @@ def get_zoom(zoom):
 
 
 # gets the pixel borders for the web Mercator mapX, mapY
+@controller(
+    name='pixel-borders',
+    url='snow-inspector/pixel-borders',
+)
 def get_pixel_borders2(request):
     if request.GET:
         lonmin = float(request.GET["lonmin"])

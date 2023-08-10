@@ -12,11 +12,15 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.conf import settings
 from tethys_services.backends.hs_restclient_helper import get_oauth_hs
+from tethys_sdk.routing import controller
 
 
 hs_hostname = "www.hydroshare.org"
 
-
+@controller(
+    name='snow_graph',
+    url='snow-inspector/snow_graph',
+)
 def snow_graph(request):
     """
     Controller that will show the snow graph for user-defined lat / lon.
@@ -59,6 +63,10 @@ def snow_graph(request):
     return render(request, 'snow_inspector/snow_graph.html', context)
 
 
+@controller(
+    name='upload_to_hydroshare_ajax',
+    url='snow-inspector/snow-inspector/upload-to-hydroshare',
+)
 def upload_to_hydroshare(request):
     print("running upload_to_hydroshare!")
     temp_dir = None

@@ -1,8 +1,12 @@
 from django.shortcuts import render
+from tethys_sdk.routing import controller
 from tethys_sdk.gizmos import DatePicker
 import datetime
 
-
+@controller(
+    name='home',
+    url='snow-inspector',
+)
 def map(request):
     """
     Controller for map page.
