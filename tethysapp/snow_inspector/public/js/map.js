@@ -393,6 +393,9 @@ $(document).ready(function() {
 		var modisDate1 = $("#endDate").val()
 		console.log(typeof modisDate1 + " " + modisDate1)
 		console.log(matrix_set)
+		console.log(typeof(matrix_ids))
+		console.log(matrix_ids)
+		
 		var modisSource = new ol.source.WMTS({
 			url:
 				"https://gibs-{a-c}.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=" +
@@ -430,8 +433,79 @@ $(document).ready(function() {
 	$("#endDate")
 		.datepicker()
 		.on("changeDate", function(ev) {
-			console.log("date changed!")
+
+			var selected_layer = $("#selectLayer").val()
+			var layer1 = "MODIS_Terra_NDSI_Snow_Cover"
+			var level, zoom1
+			modislayer.setVisible(true)
+	
+			if (selected_layer == "snowCover") {
+				layer1 = "MODIS_Terra_NDSI_Snow_Cover"
+				level = "8"
+				zoom1 = 8
+				resolutions = [
+					0.5625,
+					0.28125,
+					0.140625,
+					0.0703125,
+					0.03515625,
+					0.017578125,
+					0.0087890625,
+					0.00439453125
+				]
+				matrix_set = "500m"
+				matrix_ids = [0, 1, 2, 3, 4, 5, 6, 7]
+				button1.setAttribute(
+					"src",
+					"https://raw.githubusercontent.com/FennaHD/snow-inspector/master/" +
+						"tethysapp-snow_inspector/tethysapp/snow_inspector/public/images/Snow%20Cover%20Legend.png"
+				)
+				button1.setAttribute("style", "display:inline-block")
+			} else if (selected_layer == "snowMass") {
+				layer1 = "SMAP_L4_Snow_Mass"
+				level = "6"
+				zoom1 = 6
+				resolutions = [0.5625, 0.28125, 0.140625, 0.0703125, 0.03515625, 0.017578125]
+				matrix_set = "2km"
+				matrix_ids = [0, 1, 2, 3, 4, 5]
+				button1.setAttribute(
+					"src",
+					"https://raw.githubusercontent.com/FennaHD/snow-inspector/master/" +
+						"tethysapp-snow_inspector/tethysapp/snow_inspector/public/images/Snow%20Mass%20Legend.png"
+				)
+				button1.setAttribute("style", "display:inline-block")
+			} else if (selected_layer == "snowWaterEquivalent") {
+				layer1 = "AMSR2_Snow_Water_Equivalent"
+				level = "6"
+				zoom1 = 6
+				resolutions = [0.5625, 0.28125, 0.140625, 0.0703125, 0.03515625, 0.017578125]
+				matrix_set = "2km"
+				matrix_ids = [0, 1, 2, 3, 4, 5]
+				button1.setAttribute(
+					"src",
+					"https://raw.githubusercontent.com/FennaHD/snow-inspector/master/" +
+						"tethysapp-snow_inspector/tethysapp/snow_inspector/public/images/Snow%20Water%20Equivalent%20Legend.png"
+				)
+				button1.setAttribute("style", "display:inline-block")
+			} else if (selected_layer == "none") {
+				if (modislayer.getVisible()) {
+					modislayer.setVisible(false)
+					button1.setAttribute("style", "display:none")
+				} else {
+					button1.setAttribute("style", "display:inline-block")
+				}
+			}
+	
+			// Save layers to input brackets in openlayers_map.html
+			$("#layer1").val(layer1)
+			$("#level1").val(level)
+			$("#zoom1").val(zoom1)
+			$("#resolutions").val(resolutions)
+			$("#matrix_set").val(matrix_set)
+			console.log(matrix_set)
+			$("#matrix_ids").val(matrix_ids)
 			updateModisLayer()
+			
 		})
 
 	map = new ol.Map({
