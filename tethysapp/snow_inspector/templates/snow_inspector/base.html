@@ -1,12 +1,23 @@
-{% extends "tethys_apps/app_base.html" %} {% load static %} {% block title %}-
-{{ tethys_app.name }}{% endblock %} {% block styles %} {{ block.super }}
+{% extends "tethys_apps/app_base.html" %} 
+{% load static %} 
+{% block title %}-{{ tethys_app.name }}
+{% endblock %} 
+
+{% block styles %} 
+{{ block.super }}
 <link href="{% static 'snow_inspector/css/main.css' %}" rel="stylesheet" />
-{% endblock %} {% block app_icon %} {# The path you provided in your app.py is
+{% endblock %} 
+
+{% block app_icon %} {# The path you provided in your app.py is
 accessible through the tethys_app.icon context variable #}
 <img src="{% static tethys_app.icon %}" />
 {% endblock %} {# The name you provided in your app.py is accessible through the
-tethys_app.name context variable #} {% block app_title %}Snow Inspector{%
-endblock %} {% block header_buttons %}
+tethys_app.name context variable #} 
+{% block app_title %}
+Snow Inspector
+{% endblock %} 
+
+{% block header_buttons %}
 <div
   class="header-button glyphicon-button"
   data-bs-toggle="tooltip"
@@ -32,7 +43,9 @@ endblock %} {% block header_buttons %}
     target="_blank"
     ><i class="bi bi-info-circle"></i></a>
 </div>
-{% endblock %} {% block app_navigation_items %}
+{% endblock %} 
+
+{% block app_navigation_items %}
 <li class="nav-item title">App Navigation</li>
 <li class="nav-item active"><a class="nav-link active" href="">Home</a></li>
 <li class="nav-item" ><a class="nav-link" href="">Jobs</a></li>
@@ -43,5 +56,6 @@ endblock %} {% block header_buttons %}
 <li class="nav-item"><a class="nav-link" href="">3. The Third Step</a></li>
 <li class="nav-item separator"></li>
 <li class="nav-item"><a class="nav-link" href="">Get Started</a></li>
-{% endblock %} {% block app_content %} {% endblock %} {% block app_actions %} {%
-endblock %} {% block scripts %} {{ block.super }} {% endblock %}
+{% endblock %}
+
+

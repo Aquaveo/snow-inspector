@@ -1,16 +1,24 @@
-{% extends "snow_inspector/base.html" %} {% load static %} {% load tethys_gizmos
-%} {% block global_scripts %} {{ block.super }}
+{% extends "snow_inspector/base.html" %}
+{% load static %} 
+{% load tethys_gizmos %} 
+
+{% block global_scripts %} 
+{{ block.super }}
 <script
   src="{% static 'snow_inspector/vendor/openlayers/v3.3.0/ol.js' %}"
   type="text/javascript"
 ></script>
-{% endblock %} {% block styles %} {{ block.super }}
+{% endblock %} 
+{% block styles %} 
+{{ block.super }}
 <link
   rel="stylesheet"
   href="{% static 'snow_inspector/vendor/openlayers/v3.3.0/ol.css' %}"
   type="text/css"
 />
-{% endblock %} {% block app_navigation_items %}
+{% endblock %} 
+
+{% block app_navigation_items %}
 <form method="get" action="snow_graph/">
   <br />
   <li>
@@ -41,9 +49,14 @@
     class="btn btn-outline-secondary"
   />
 </form>
-{% endblock %} {% block app_content_wrapper_override %} {% include
-"snow_inspector/welcome_modal.html" %} {{block.super}} {% endblock %} {% block
-app_content %}
+{% endblock %} 
+
+{% block app_content_wrapper_override %} 
+{% include "snow_inspector/welcome_modal.html" %} 
+{{block.super}} 
+{% endblock %} 
+
+{% block app_content %}
 <p style="display: inline">
   Click on the map to select location. Then click on the "Retrieve Snow Data"
   button to show data history.
@@ -86,6 +99,9 @@ app_content %}
   </div>
 </div>
 <!-- end outerContainer -->
-{% endblock %} {% block scripts %} {{ block.super }}
+{% endblock %} 
+
+{% block scripts %} 
+{{ block.super }}
 <script src="{% static 'snow_inspector/js/map.js' %}"></script>
 {% endblock %}
