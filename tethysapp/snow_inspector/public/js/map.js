@@ -429,7 +429,8 @@ $(document).ready(function() {
 			}
 		}
 	}
-
+	// MIGRATION NOTE 3
+	// https://stackoverflow.com/questions/31384643/openlayers-wmts-not-generating-correct-url
 	$("#endDate")
 		.datepicker()
 		.on("changeDate", function(ev) {

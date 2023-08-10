@@ -437,7 +437,7 @@ function add_snow_pixels_to_map(map, map_date, zoom, layer, level) {
     // MIGRATION NOTES 2
     //https://github.com/openlayers/openlayers/issues/3526
     var pixel_source = new ol.source.Vector({
-        projection: "EPSG:3857",
+        // projection: "EPSG:3857",
         url: pixel_url,
         format: new ol.format.GeoJSON()
     })
@@ -461,9 +461,11 @@ function add_snow_pixels_to_map(map, map_date, zoom, layer, level) {
                                 color: "#319FD3",
                                 width: 1
                             }),
+                            // MIGRATION NOTE 5 
+                            // https://github.com/openlayers/openlayers/issues/13665
                             text: new ol.style.Text({
                                 font: "20px sans-serif",
-                                text: pixel_value,
+                                text: String(pixel_value),
                                 fill: new ol.style.Fill({
                                     color: pixel_color //'#000'
                                 }),
@@ -480,7 +482,8 @@ function add_snow_pixels_to_map(map, map_date, zoom, layer, level) {
             }
         })
         map.addLayer(pixelBoundaries)
-    } else {
+    } 
+    else {
         pixelBoundaries.setSource(pixel_source)
     }
 }
