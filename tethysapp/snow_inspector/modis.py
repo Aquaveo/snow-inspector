@@ -6,7 +6,7 @@ import urllib.error
 import urllib.parse
 
 from django.http import JsonResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from tethys_sdk.routing import controller
 
 """
@@ -255,7 +255,7 @@ def get_data_for_pixel(request):
     context = {'lat': lat, 'lon': lon, 'startdate': start, 'enddate': end, 'site_name': site_name,
                'time_series': time_series}
 
-    xmlResponse = render_to_response('snow_inspector/waterml.xml', context)
+    xmlResponse = render (request,'snow_inspector/waterml.xml', context)
     xmlResponse['Content-Type'] = 'application/xml;'
     return xmlResponse
 
@@ -333,7 +333,7 @@ def get_data_waterml(request):
     context = {'lat': lat, 'lon': lon, 'startdate': start, 'enddate': end, 'site_name': site_name,
                'time_series': time_series}
 
-    xmlResponse = render_to_response('snow_inspector/waterml.xml', context)
+    xmlResponse = render(request,'snow_inspector/waterml.xml', context)
     xmlResponse['Content-Type'] = 'application/xml'
     xmlResponse['content-disposition'] = "attachment; filename=output-time-series.xml"
     return xmlResponse
