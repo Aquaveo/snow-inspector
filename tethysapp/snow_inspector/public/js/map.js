@@ -351,7 +351,7 @@ $(document).ready(function() {
 	}
 
 	function createModisLayer() {
-		console.log("creating layer")
+		// console.log("creating layer")
 		$("#zoom1").val(8)
 		$("#layer1").val("MODIS_Terra_NDSI_Snow_Cover")
 		$("#level1").val("8")
@@ -379,7 +379,12 @@ $(document).ready(function() {
 			}),
 			wrapX: false
 		})
-		console.log()
+		button1.setAttribute(
+			"src",
+			"https://raw.githubusercontent.com/FennaHD/snow-inspector/master/" +
+				"tethysapp-snow_inspector/tethysapp/snow_inspector/public/images/Snow%20Cover%20Legend.png"
+		)
+		button1.setAttribute("style", "display:inline-block")
 		return new ol.layer.Tile({ source: modis })
 	}
 
@@ -387,7 +392,7 @@ $(document).ready(function() {
 		console.log("updating layer")
 		var modisDate1 = $("#endDate").val()
 		console.log(typeof modisDate1 + " " + modisDate1)
-
+		console.log(matrix_set)
 		var modisSource = new ol.source.WMTS({
 			url:
 				"https://gibs-{a-c}.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?TIME=" +
