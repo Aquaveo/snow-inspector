@@ -284,7 +284,9 @@ function add_days(time_ms, days) {
 //gets the proper URL requests for the AJAX function call
 function get_ajax_urls(lat, lon, begin_ms, end_ms, step, zoom, layer, level) {
     var base_url =
-        "/apps/snow-inspector/snow_data/?layer=" +
+        window.location.pathname.split('/snow-inspector')[0] +
+        "/snow-inspector/snow_data/?layer=" +
+        // "/apps/snow-inspector/snow_data/?layer=" +
         layer +
         "&level=" +
         level +
@@ -412,8 +414,8 @@ function add_snow_pixels_to_map(map, map_date, zoom, layer, level) {
     var ymin = extentLatLon[1]
     var xmax = extentLatLon[2]
     var ymax = extentLatLon[3]
-    var baseurl = "/apps/snow-inspector/pixel-borders/"
-
+    // var baseurl = "/apps/snow-inspector/pixel-borders/"
+    var baseurl =  window.location.pathname.split('/snow-inspector')[0] + "/snow-inspector/pixel-borders/";
     var pixel_url =
         baseurl +
         "?layer=" +

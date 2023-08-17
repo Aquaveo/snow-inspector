@@ -156,8 +156,8 @@ $(document).ready(function() {
 		var xmax = extentLatLon[2]
 		var ymax = extentLatLon[3]
 
-		var baseurl = "/apps/snow-inspector/pixel-borders/"
-
+		// var baseurl = "/apps/snow-inspector/pixel-borders/"
+		var baseurl = window.location.pathname.split('/snow-inspector')[0] + "/snow-inspector/pixel-borders/"
 		var pxDate = $("#endDate").val()
 
 		var pixel_url =
