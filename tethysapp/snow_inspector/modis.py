@@ -17,13 +17,17 @@ Taken from http://wiki.openstreetmap.org/wiki/Tilenames#Lon..2Flat._to_tile_numb
 
 def deg2num(lat_deg, lon_deg, zoom):
     tileSize = 256
-    #zoom = 8
+    # zoom = 8
     lat_rad = math.radians(float(lat_deg))
-    n = 2.0 ** zoom
+    n = 2.0**zoom
     xtilef = (float(lon_deg) + 180.0) / 360.0 * n
     xtile = int(xtilef)
     xpixel = int((xtilef - float(xtile)) * tileSize)
-    ytilef = (1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n
+    ytilef = (
+        (1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi)
+        / 2.0
+        * n
+    )
     ytile = int(ytilef)
     ypixel = int((ytilef - float(ytile)) * tileSize)
 
@@ -31,45 +35,51 @@ def deg2num(lat_deg, lon_deg, zoom):
 
 
 def getTileURL(xtile, ytile, date, zoom, layer, level):
-    baseURL = 'http://map1.vis.earthdata.nasa.gov/wmts/epsg3857/best/' + \
-              '{0}/default/{1}/{2}{3}/{4}/{5}/{6}.png'
+    baseURL = (
+        "https://gitc.earthdata.nasa.gov/wmts/epsg3857/best/"
+        + "{0}/default/{1}/{2}{3}/{4}/{5}/{6}.png"
+    )
     if layer is None:
-        layer = 'MODIS_Terra_NDSI_Snow_Cover'
-    tileMatrix = 'GoogleMapsCompatible_Level'
+        layer = "MODIS_Terra_NDSI_Snow_Cover"
+    tileMatrix = "GoogleMapsCompatible_Level"
     if level is None:
-        level = '8'
+        level = "8"
     time = date.strftime("%Y-%m-%d")
-    #zoom = 8
+    # zoom = 8
     return baseURL.format(layer, time, tileMatrix, level, zoom, ytile, xtile)
 
 
 def getTileURL2(xtile, ytile, date, zoom, layer):
     # need layer, time, tileMatrix, zoom, ytile, xtile
-    baseURL = 'http://map1.vis.earthdata.nasa.gov/wmts/epsg4326/best/' + \
-              '{0}/default/{1}/{2}/{3}/{4}/{5}.png'
+    baseURL = (
+        "https://gitc.earthdata.nasa.gov/wmts/epsg4326/best/"
+        + "{0}/default/{1}/{2}/{3}/{4}/{5}.png"
+    )
     if layer is None:
-        layer = 'MODIS_Terra_NDSI_Snow_Cover'
+        layer = "MODIS_Terra_NDSI_Snow_Cover"
     time = date.strftime("%Y-%m-%d")
-    tileMatrix = '500m'
+    tileMatrix = "500m"
     return baseURL.format(layer, time, tileMatrix, zoom, ytile, xtile)
 
 
 def getTileURLTemplate(xtile, ytile, zoom, layer):
     # I need the tileMatrix, correct zoom, xtile and ytile
-    baseURL = 'http://map1.vis.earthdata.nasa.gov/wmts/epsg4326/best/' + \
-              '{0}/default/{1}/{2}/{3}/{4}/{5}.png'
-    #layer = 'MODIS_Terra_NDSI_Snow_Cover'
-    #tileMatrix = 'GoogleMapsCompatible_Level'
-    tileMatrix = '500m'
-    time = 'DATE_PLACEHOLDER'
-    #zoom = 7
+    baseURL = (
+        "https://gitc.earthdata.nasa.gov/wmts/epsg4326/best/"
+        + "{0}/default/{1}/{2}/{3}/{4}/{5}.png"
+    )
+    # layer = 'MODIS_Terra_NDSI_Snow_Cover'
+    # tileMatrix = 'GoogleMapsCompatible_Level'
+    tileMatrix = "500m"
+    time = "DATE_PLACEHOLDER"
+    # zoom = 7
     return baseURL.format(layer, time, tileMatrix, zoom, ytile, xtile)
 
 
 def getTimeSeries(lat, lon, beginDate, endDate, zoom, layer=None, level=None):
     nDays = (endDate - beginDate).days
     datelist = [beginDate + datetime.timedelta(days=x) for x in range(0, nDays)]
-    #zoom = 7
+    # zoom = 7
     xtile, ytile, xpixel, ypixel = deg2num(lat, lon, zoom)
     ts = []
     for d in datelist:
@@ -77,7 +87,7 @@ def getTimeSeries(lat, lon, beginDate, endDate, zoom, layer=None, level=None):
         pixel_val = getImage(url, ypixel, xpixel)
         snow_val = pixelValueToSnowPercent(pixel_val, layer)
         ts.append(snow_val)
-    print(ts)
+    # print(ts)
     return ts
 
 
@@ -114,7 +124,9 @@ def pixelValueToSnowPercent(pixel_val, layer_name):  # image_date used to be a p
     elif layer_name == "AMSR2_Snow_Water_Equivalent":
         snow_val = pixel_val
 
-    return (math.floor(snow_val * 10) / 10)  # makes value a float with one decimal (brought down, not approximated)
+    return (
+        math.floor(snow_val * 10) / 10
+    )  # makes value a float with one decimal (brought down, not approximated)
 
 
 # function used so that pixel values above chart go to zero
@@ -138,15 +150,17 @@ def pixelSnowVal(pixel_val, layer_name):
         else:
             snow_val = 2 * pixel_val
 
-    return (math.floor(snow_val * 10) / 10)  # makes value a float with one decimal (brought down, not approximated)
+    return (
+        math.floor(snow_val * 10) / 10
+    )  # makes value a float with one decimal (brought down, not approximated)
 
 
 def xCoordinateToLongitude(x, zoom):
-    return float(x) / (2.0 ** zoom) * 360.0 - 180.0
+    return float(x) / (2.0**zoom) * 360.0 - 180.0
 
 
 def yCoordinateToLatitude(y, zoom):
-    n = math.pi - (2 * math.pi * float(y)) / (2 ** zoom)
+    n = math.pi - (2 * math.pi * float(y)) / (2**zoom)
     lat_rad = math.atan(math.sinh(n))
     return lat_rad * (180.0 / math.pi)
 
@@ -160,12 +174,20 @@ def tileBoundsLonLat(x, y, zoom):
 
 
 def getImage(url, rowpixel, colpixel):
-    print(url)
-    r = png.Reader(file=urllib.request.urlopen(url))
-    w, h, pixels, metadata = r.read()
-    pxlist = list(pixels)
-    v = pxlist[rowpixel][colpixel]
-    return v
+    # print(url)
+    try:
+        r = png.Reader(file=urllib.request.urlopen(url))
+        # with urllib.request.urlopen(url, timeout=30) as response:
+        # r = png.Reader(file=response)
+        image_info = r.asRGBA()
+        # Process the image data here
+        # print(image_info)
+        w, h, pixels, metadata = r.read()
+        pxlist = list(pixels)
+        v = pxlist[rowpixel][colpixel]
+        return v
+    except Exception:
+        return -9999
 
 
 def getImageVals(url):
@@ -177,10 +199,12 @@ def getImageVals(url):
 
 def process_query(request):
     # default value for lat, lon
-    lat = '50'
-    lon = '15'
+    lat = "50"
+    lon = "15"
     start = datetime.datetime.today().strftime("%Y-%m-%d")
-    end = (datetime.datetime.today() - datetime.timedelta(days=365)).strftime("%Y-%m-%d")
+    end = (datetime.datetime.today() - datetime.timedelta(days=365)).strftime(
+        "%Y-%m-%d"
+    )
 
     if request.GET:
         lat = request.GET["lat"]
@@ -193,7 +217,7 @@ def process_query(request):
         if request.GET["end"]:
             enddate = datetime.datetime.strptime(end, "%Y-%m-%d")
 
-    context = {'lat': lat, 'lon': lon, 'startdate': start, 'enddate': end}
+    context = {"lat": lat, "lon": lon, "startdate": start, "enddate": end}
     return context
 
 
@@ -214,23 +238,26 @@ def format_time_series(startDate, ts, nodata_value):
     formatted_ts = []
     for i in range(0, nDays):
         formatted_val = ts[i]
-        if (formatted_val is None):
+        if formatted_val is None:
             formatted_val = nodata_value
-        formatted_date = datelist[i].strftime('%Y-%m-%dT%H:%M:%S')
-        formatted_ts.append({'date': formatted_date, 'val': formatted_val})
+        formatted_date = datelist[i].strftime("%Y-%m-%dT%H:%M:%S")
+        formatted_ts.append({"date": formatted_date, "val": formatted_val})
 
     return formatted_ts
 
+
 @controller(
-    name='pixel',
-    url='snow-inspector/pixel',
+    name="pixel",
+    url="snow-inspector/pixel",
 )
 def get_data_for_pixel(request):
     """
     Controller that will show the snow data for a specific pixel in WaterML format
     """
     start = datetime.datetime.today().strftime("%Y-%m-%d")
-    end = (datetime.datetime.today() - datetime.timedelta(days=365)).strftime("%Y-%m-%d")
+    end = (datetime.datetime.today() - datetime.timedelta(days=365)).strftime(
+        "%Y-%m-%d"
+    )
 
     if request.GET:
         x = request.GET["x"]
@@ -243,7 +270,7 @@ def get_data_for_pixel(request):
         if request.GET["end"]:
             enddate = datetime.datetime.strptime(end, "%Y-%m-%d")
 
-    context = {'x': x, 'y': y, 'startdate': start, 'enddate': end}
+    context = {"x": x, "y": y, "startdate": start, "enddate": end}
     # pass url of tile to output
     zoom = 16
     lon = xCoordinateToLongitude(x, zoom)
@@ -251,27 +278,35 @@ def get_data_for_pixel(request):
     ts = getTimeSeries(lat, lon, startdate, enddate)
     nodata_value = -9999
     time_series = format_time_series(startdate, ts, nodata_value)
-    site_name = str(x) + '-' + str(y)
-    context = {'lat': lat, 'lon': lon, 'startdate': start, 'enddate': end, 'site_name': site_name,
-               'time_series': time_series}
+    site_name = str(x) + "-" + str(y)
+    context = {
+        "lat": lat,
+        "lon": lon,
+        "startdate": start,
+        "enddate": end,
+        "site_name": site_name,
+        "time_series": time_series,
+    }
 
-    xmlResponse = render (request,'snow_inspector/waterml.xml', context)
-    xmlResponse['Content-Type'] = 'application/xml;'
+    xmlResponse = render(request, "snow_inspector/waterml.xml", context)
+    xmlResponse["Content-Type"] = "application/xml;"
     return xmlResponse
 
+
 @controller(
-    name='snow_data',
-    url='snow-inspector/snow_data',
+    name="snow_data",
+    url="snow-inspector/snow_data",
 )
 def get_data_json(request):
     """
     Controller that will show the snow data in Json format
     """
-    lat = '50'
-    lon = '15'
+    lat = "50"
+    lon = "15"
     start = datetime.datetime.today().strftime("%Y-%m-%d")
-    end = (datetime.datetime.today() - datetime.timedelta(days=365)).strftime("%Y-%m-%d")
-
+    end = (datetime.datetime.today() - datetime.timedelta(days=365)).strftime(
+        "%Y-%m-%d"
+    )
     if request.GET:
         lat = request.GET["lat"]
         lon = request.GET["lon"]
@@ -286,29 +321,34 @@ def get_data_json(request):
         if request.GET["end"]:
             enddate = datetime.datetime.strptime(end, "%Y-%m-%d")
 
-    context = {'lat': lat, 'lon': lon, 'startdate': start, 'enddate': end}
+    context = {"lat": lat, "lon": lon, "startdate": start, "enddate": end}
     # pass url of tile to output
-    #zoom = 7
+    # zoom = 7
     zoom = int(zoom)
 
     xtile, ytile, xpixel, ypixel = deg2num(lat, lon, zoom)
     tile = getTileURLTemplate(xtile, ytile, zoom, layer)
 
     ts = getTimeSeries(lat, lon, startdate, enddate, zoom, layer, level)
-    return JsonResponse({"query": context, "tile": tile, "xpixel": xpixel, "ypixel": ypixel, "data": ts})
+    return JsonResponse(
+        {"query": context, "tile": tile, "xpixel": xpixel, "ypixel": ypixel, "data": ts}
+    )
+
 
 @controller(
-    name='waterml',
-    url='snow-inspector/waterml',
+    name="waterml",
+    url="snow-inspector/waterml",
 )
 def get_data_waterml(request):
     """
     Controller that will show the data in WaterML 1.1 format
     """
-    lat = '50'
-    lon = '15'
+    lat = "50"
+    lon = "15"
     start = datetime.datetime.today().strftime("%Y-%m-%d")
-    end = (datetime.datetime.today() - datetime.timedelta(days=365)).strftime("%Y-%m-%d")
+    end = (datetime.datetime.today() - datetime.timedelta(days=365)).strftime(
+        "%Y-%m-%d"
+    )
     layer = "MODIS_Terra_NDSI_Snow_Cover"
     level = "8"
     zoom = 8
@@ -325,17 +365,23 @@ def get_data_waterml(request):
         if request.GET["end"]:
             enddate = datetime.datetime.strptime(end, "%Y-%m-%d")
 
-    #zoom = 8
+    # zoom = 8
     nodata_value = -9999
     ts = getTimeSeries(lat, lon, startdate, enddate, zoom, layer, level)
     time_series = format_time_series(startdate, ts, nodata_value)
     site_name = get_site_name(float(lat), float(lon))
-    context = {'lat': lat, 'lon': lon, 'startdate': start, 'enddate': end, 'site_name': site_name,
-               'time_series': time_series}
+    context = {
+        "lat": lat,
+        "lon": lon,
+        "startdate": start,
+        "enddate": end,
+        "site_name": site_name,
+        "time_series": time_series,
+    }
 
-    xmlResponse = render(request,'snow_inspector/waterml.xml', context)
-    xmlResponse['Content-Type'] = 'application/xml'
-    xmlResponse['content-disposition'] = "attachment; filename=output-time-series.xml"
+    xmlResponse = render(request, "snow_inspector/waterml.xml", context)
+    xmlResponse["Content-Type"] = "application/xml"
+    xmlResponse["content-disposition"] = "attachment; filename=output-time-series.xml"
     return xmlResponse
 
 
@@ -343,41 +389,77 @@ def get_data_waterml(request):
 def getTilesInView(lonmin, latmin, lonmax, latmax, tileDate, zoom, layer, level):
     tiles = []
     tileInfos = []
-    #zoom = 8
+    # zoom = 8
 
     # upper left
     ulX, ulY, ulpixelXUL, ulpixelYUL = deg2num(latmax, lonmin, zoom)
     ulTile = getTileURL(ulX, ulY, tileDate, zoom, layer, level)
-    (xLeft, yTop, xRight, yBottom) = getPixelsInTile(ulX, ulY, lonmin, latmin, lonmax, latmax, zoom)
-    tile_ul = ({"url": ulTile, "xTile": ulX, "yTile": ulY,
-                "xPixelLeft": xLeft, "yPixelTop": yTop, "xPixelRight": xRight, "yPixelBottom": yBottom})
+    (xLeft, yTop, xRight, yBottom) = getPixelsInTile(
+        ulX, ulY, lonmin, latmin, lonmax, latmax, zoom
+    )
+    tile_ul = {
+        "url": ulTile,
+        "xTile": ulX,
+        "yTile": ulY,
+        "xPixelLeft": xLeft,
+        "yPixelTop": yTop,
+        "xPixelRight": xRight,
+        "yPixelBottom": yBottom,
+    }
 
     # upper right
     urX, urY, urpixelX, urpixelY = deg2num(latmax, lonmax, zoom)
     urTile = getTileURL(urX, urY, tileDate, zoom, layer, level)
-    (xLeft, yTop, xRight, yBottom) = getPixelsInTile(urX, urY, lonmin, latmin, lonmax, latmax, zoom)
-    tile_ur = ({"url": urTile, "xTile": urX, "yTile": urY,
-                "xPixelLeft": xLeft, "yPixelTop": yTop, "xPixelRight": xRight, "yPixelBottom": yBottom})
+    (xLeft, yTop, xRight, yBottom) = getPixelsInTile(
+        urX, urY, lonmin, latmin, lonmax, latmax, zoom
+    )
+    tile_ur = {
+        "url": urTile,
+        "xTile": urX,
+        "yTile": urY,
+        "xPixelLeft": xLeft,
+        "yPixelTop": yTop,
+        "xPixelRight": xRight,
+        "yPixelBottom": yBottom,
+    }
 
     # lower left
     llX, llY, llpixelX, llpixelY = deg2num(latmin, lonmin, zoom)
     llTile = getTileURL(llX, llY, tileDate, zoom, layer, level)
-    (xLeft, yTop, xRight, yBottom) = getPixelsInTile(llX, llY, lonmin, latmin, lonmax, latmax, zoom)
-    tile_ll = ({"url": llTile, "xTile": llX, "yTile": llY,
-                "xPixelLeft": xLeft, "yPixelTop": yTop, "xPixelRight": xRight, "yPixelBottom": yBottom})
+    (xLeft, yTop, xRight, yBottom) = getPixelsInTile(
+        llX, llY, lonmin, latmin, lonmax, latmax, zoom
+    )
+    tile_ll = {
+        "url": llTile,
+        "xTile": llX,
+        "yTile": llY,
+        "xPixelLeft": xLeft,
+        "yPixelTop": yTop,
+        "xPixelRight": xRight,
+        "yPixelBottom": yBottom,
+    }
 
     # lower right
     lrX, lrY, lrpixelX, lrpixelY = deg2num(latmin, lonmax, zoom)
     lrTile = getTileURL(lrX, lrY, tileDate, zoom, layer, level)
-    (xLeft, yTop, xRight, yBottom) = getPixelsInTile(lrX, lrY, lonmin, latmin, lonmax, latmax, zoom)
-    tile_lr = ({"url": lrTile, "xTile": lrX, "yTile": lrY,
-                "xPixelLeft": xLeft, "yPixelTop": yTop, "xPixelRight": xRight, "yPixelBottom": yBottom})
+    (xLeft, yTop, xRight, yBottom) = getPixelsInTile(
+        lrX, lrY, lonmin, latmin, lonmax, latmax, zoom
+    )
+    tile_lr = {
+        "url": lrTile,
+        "xTile": lrX,
+        "yTile": lrY,
+        "xPixelLeft": xLeft,
+        "yPixelTop": yTop,
+        "xPixelRight": xRight,
+        "yPixelBottom": yBottom,
+    }
 
     # in between
-    tileMinRow = tile_ul['yTile']
-    tileMaxRow = tile_ll['yTile']
-    tileMinCol = tile_ul['xTile']
-    tileMaxCol = tile_ur['xTile']
+    tileMinRow = tile_ul["yTile"]
+    tileMaxRow = tile_ll["yTile"]
+    tileMinCol = tile_ul["xTile"]
+    tileMaxCol = tile_ur["xTile"]
 
     nTileCols = tileMaxCol - tileMinCol + 1
     nTileRows = tileMaxRow - tileMinRow + 1
@@ -385,9 +467,18 @@ def getTilesInView(lonmin, latmin, lonmax, latmax, tileDate, zoom, layer, level)
     for tileRow in range(tileMinRow, tileMaxRow + 1):
         for tileCol in range(tileMinCol, tileMaxCol + 1):
             tileURL = getTileURL(tileCol, tileRow, tileDate, zoom, layer, level)
-            (xLeft, yTop, xRight, yBottom) = getPixelsInTile(tileCol, tileRow, lonmin, latmin, lonmax, latmax, zoom)
-            tileInfo = ({"url": tileURL, "xTile": tileCol, "yTile": tileRow,
-                         "xPixelLeft": xLeft, "yPixelTop": yTop, "xPixelRight": xRight, "yPixelBottom": yBottom})
+            (xLeft, yTop, xRight, yBottom) = getPixelsInTile(
+                tileCol, tileRow, lonmin, latmin, lonmax, latmax, zoom
+            )
+            tileInfo = {
+                "url": tileURL,
+                "xTile": tileCol,
+                "yTile": tileRow,
+                "xPixelLeft": xLeft,
+                "yPixelTop": yTop,
+                "xPixelRight": xRight,
+                "yPixelBottom": yBottom,
+            }
             tiles.append(tileURL)
             tileInfos.append(tileInfo)
 
@@ -396,26 +487,26 @@ def getTilesInView(lonmin, latmin, lonmax, latmax, tileDate, zoom, layer, level)
 
 def getPixelsInTile(tileX, tileY, lonmin, latmin, lonmax, latmax, zoom):
     tileXmin, tileYmin, xPixelLeft, yPixelTop = deg2num(latmax, lonmin, zoom)
-    if (tileXmin == tileX):
+    if tileXmin == tileX:
         xPixelMin = xPixelLeft
     else:
         xPixelMin = 0
 
     # xPixelRight
     tileXmax, tileYmax, xPixelRight, yPixelBottom = deg2num(latmin, lonmax, zoom)
-    if (tileXmax == tileX):
+    if tileXmax == tileX:
         xPixelMax = xPixelRight
     else:
         xPixelMax = 255
 
     # yPixelTop
-    if (tileYmin == tileY):
+    if tileYmin == tileY:
         yPixelMin = yPixelTop
     else:
         yPixelMin = 0
 
     # yPixelBottom
-    if (tileYmax == tileY):
+    if tileYmax == tileY:
         yPixelMax = yPixelBottom
     else:
         yPixelMax = 255
@@ -433,8 +524,8 @@ def get_zoom(zoom):
 
 # gets the pixel borders for the web Mercator mapX, mapY
 @controller(
-    name='pixel-borders',
-    url='snow-inspector/pixel-borders',
+    name="pixel-borders",
+    url="snow-inspector/pixel-borders",
 )
 def get_pixel_borders2(request):
     if request.GET:
@@ -461,7 +552,9 @@ def get_pixel_borders2(request):
         tileId = 0
 
         # check tiles in view
-        tiles = getTilesInView(lonmin, latmin, lonmax, latmax, tileDate, zoom, layer, level)
+        tiles = getTilesInView(
+            lonmin, latmin, lonmax, latmax, tileDate, zoom, layer, level
+        )
 
         # json feature list
         featureList = {"type": "FeatureCollection", "features": []}
@@ -471,7 +564,9 @@ def get_pixel_borders2(request):
             bigTileLon = xCoordinateToLongitude(tile["xTile"], zoom)
             bigTileLat = yCoordinateToLatitude(tile["yTile"], zoom)
 
-            startTileX, startTileY, xPixel, yPixel = deg2num(bigTileLat, bigTileLon, zoom2)
+            startTileX, startTileY, xPixel, yPixel = deg2num(
+                bigTileLat, bigTileLon, zoom2
+            )
             vals = getImageVals(tile["url"])
 
             for i in range(tile["yPixelTop"], tile["yPixelBottom"] + 1):
@@ -484,25 +579,31 @@ def get_pixel_borders2(request):
                     snowVal = pixelValueToSnowPercent(pixelVal, layer)
 
                     minX, minY, maxX, maxY = tileBoundsLonLat(tileX, tileY, zoom2)
-                    pixel = {"id": tileId, "pixelval": snowVal, "minX": minX, "minY": minY, "maxX": maxX, "maxY": maxY}
+                    pixel = {
+                        "id": tileId,
+                        "pixelval": snowVal,
+                        "minX": minX,
+                        "minY": minY,
+                        "maxX": maxX,
+                        "maxY": maxY,
+                    }
                     boundaryList.append(pixel)
 
                     newF = {
                         "type": "Feature",
-                        "properties": {
-                            "id": tileId,
-                            "val": snowVal
-                        },
+                        "properties": {"id": tileId, "val": snowVal},
                         "geometry": {
                             "type": "Polygon",
-                            "coordinates": [[
-                                [minX, minY],
-                                [maxX, minY],
-                                [maxX, maxY],
-                                [minX, maxY],
-                                [minX, minY]
-                            ]]
-                        }
+                            "coordinates": [
+                                [
+                                    [minX, minY],
+                                    [maxX, minY],
+                                    [maxX, maxY],
+                                    [minX, maxY],
+                                    [minX, minY],
+                                ]
+                            ],
+                        },
                     }
                     featureList["features"].append(newF)
 

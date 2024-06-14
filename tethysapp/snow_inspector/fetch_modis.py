@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import matplotlib.pyplot as plt
+
 """
 Created on Wed Oct 15 22:18:08 2014
 @author: Jiri
@@ -26,21 +27,27 @@ Taken from http://wiki.openstreetmap.org/wiki/Tilenames#Lon..2Flat._to_tile_numb
 def deg2num(lat_deg, lon_deg, zoom):
     tileSize = 256
     lat_rad = math.radians(lat_deg)
-    n = 2.0 ** zoom
+    n = 2.0**zoom
     xtilef = (lon_deg + 180.0) / 360.0 * n
     xtile = int(xtilef)
     xpixel = int((xtilef - float(xtile)) * tileSize)
-    ytilef = (1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi) / 2.0 * n
+    ytilef = (
+        (1.0 - math.log(math.tan(lat_rad) + (1 / math.cos(lat_rad))) / math.pi)
+        / 2.0
+        * n
+    )
     ytile = int(ytilef)
     ypixel = int((ytilef - float(ytile)) * tileSize)
     return (xtile, ytile, xpixel, ypixel)
 
 
 def getTileURL(xtile, ytile, zoom, date):
-    baseURL = 'http://map1.vis.earthdata.nasa.gov/wmts-webmerc/' + \
-              '{0}/default/{1}/{2}/{3}/{4}/{5}.png'
-    layer = 'MODIS_Terra_Snow_Cover'
-    tileMatrix = 'GoogleMapsCompatible_Level8'
+    baseURL = (
+        "https://gitc.earthdata.nasa.gov/wmts-webmerc/"
+        + "{0}/default/{1}/{2}/{3}/{4}/{5}.png"
+    )
+    layer = "MODIS_Terra_Snow_Cover"
+    tileMatrix = "GoogleMapsCompatible_Level8"
     time = date.strftime("%Y-%m-%d")
     zoom = 8
     return baseURL.format(layer, time, tileMatrix, zoom, ytile, xtile)
@@ -84,7 +91,7 @@ def getTimeSeries(lat, lon, beginDate, endDate):
     ts = []
     for d in datelist:
         url = getTileURL(xtile, ytile, zoom, d)
-        print(url)
+        # print(url)
         pixel_val = getImage(url, ypixel, xpixel)
         snow_val = pixelValueToSnowPercent(pixel_val, d)
         if snow_val is None:
@@ -115,8 +122,8 @@ datelist = pd.date_range(beginDate, endDate)
 v = getTimeSeries(lat1, lon1, beginDate, endDate)
 fig = plt.figure()
 ax = fig.add_subplot(111)
-ax.plot(datelist, v, 'ro')
-ax.plot(datelist, v, 'r--')
+ax.plot(datelist, v, "ro")
+ax.plot(datelist, v, "r--")
 # ax.fill_between(datelist, 0, v)
 
 # Make space for and rotate the x-axis tick labels

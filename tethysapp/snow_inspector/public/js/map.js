@@ -146,7 +146,7 @@ $(document).ready(function() {
 
 	//add geojson layer with tile outlines
 	function add_pixel_boundaries() {
-		console.log("WAS ACTIVATED!!!")
+		////console.log("WAS ACTIVATED!!!")
 
 		var extent = map.getView().calculateExtent(map.getSize())
 
@@ -172,7 +172,7 @@ $(document).ready(function() {
 			ymax +
 			"&date=" +
 			pxDate
-		console.log(pixel_url)
+		////console.log(pixel_url)
 
 		var pixel_source = new ol.source.GeoJSON({
 			projection: "EPSG:4326",
@@ -323,7 +323,7 @@ $(document).ready(function() {
 		$("#zoom1").val(zoom1)
 		$("#resolutions").val(resolutions)
 		$("#matrix_set").val(matrix_set)
-		console.log(matrix_set)
+		//console.log(matrix_set)
 		$("#matrix_ids").val(matrix_ids)
 		updateModisLayer()
 	})
@@ -351,7 +351,7 @@ $(document).ready(function() {
 	}
 
 	function createModisLayer() {
-		// console.log("creating layer")
+		// //console.log("creating layer")
 		$("#zoom1").val(8)
 		$("#layer1").val("MODIS_Terra_NDSI_Snow_Cover")
 		$("#level1").val("8")
@@ -361,7 +361,7 @@ $(document).ready(function() {
 				$("#endDate").val(),
 			layer: "MODIS_Terra_NDSI_Snow_Cover",
 			format: "image/png",
-			matrixSet: "EPSG4326_" + "500m",
+			matrixSet: "500m",
 			tileGrid: new ol.tilegrid.WMTS({
 				origin: [-180, 90],
 				resolutions: [
@@ -389,12 +389,12 @@ $(document).ready(function() {
 	}
 
 	function updateModisLayer() {
-		console.log("updating layer")
+		//console.log("updating layer")
 		var modisDate1 = $("#endDate").val()
-		console.log(typeof modisDate1 + " " + modisDate1)
-		console.log(matrix_set)
-		console.log(typeof(matrix_ids))
-		console.log(matrix_ids)
+		//console.log(typeof modisDate1 + " " + modisDate1)
+		//console.log(matrix_set)
+		//console.log(typeof(matrix_ids))
+		//console.log(matrix_ids)
 		
 		var modisSource = new ol.source.WMTS({
 			url:
@@ -402,7 +402,7 @@ $(document).ready(function() {
 				modisDate1,
 			layer: $("#layer1").val(),
 			format: "image/png",
-			matrixSet: "EPSG4326_" + matrix_set,
+			matrixSet:  matrix_set,
 			tileGrid: new ol.tilegrid.WMTS({
 				origin: [-180, 90],
 				resolutions: resolutions,
@@ -503,7 +503,7 @@ $(document).ready(function() {
 			$("#zoom1").val(zoom1)
 			$("#resolutions").val(resolutions)
 			$("#matrix_set").val(matrix_set)
-			console.log(matrix_set)
+			//console.log(matrix_set)
 			$("#matrix_ids").val(matrix_ids)
 			updateModisLayer()
 			
@@ -529,14 +529,14 @@ $(document).ready(function() {
 		})
 	})
 
-	console.log(map_zoom)
+	//console.log(map_zoom)
 	// checking zoom end
 	map.getView().on("propertychange", function(e) {
 		switch (e.key) {
 			case "resolution":
-				console.log("zoom changed!")
+				//console.log("zoom changed!")
 				var newZoom = map.getView().getZoom()
-				console.log(newZoom)
+				//console.log(newZoom)
 				$("#zoom").val(newZoom)
 
 				configure_show_pixels(newZoom)
@@ -579,22 +579,22 @@ $(document).ready(function() {
 
 	function addPointLonLat(coordinates) {
 		var coords = coordinates //ol.proj.transform(coordinates, 'EPSG:4326','EPSG:3857');
-		console.log(coords)
+		//console.log(coords)
 		addPoint(coords)
 		map.getView().setCenter(coords)
-		console.log(coords)
+		//console.log(coords)
 	}
 
 	function refreshDate() {
 		var endDate = $("#endDate").val()
-		console.log(endDate)
+		//console.log(endDate)
 		$("#end").val(endDate)
 	}
 
 	var coords = [lon, lat]
-	console.log(coords)
+	//console.log(coords)
 	addPointLonLat(coords)
-	console.log(coords)
+	//console.log(coords)
 
 	$("#inputDays").val($("#inputDays").attr("placeholder"))
 	$("#inputLon").val(lon)
@@ -607,7 +607,7 @@ $(document).ready(function() {
 		//now update lat and long in textbox
 
 		var lonlat = coordinate //ol.proj.transform(coordinate, 'EPSG:3857', 'EPSG:4326');
-		console.log(coordinate)
+		//console.log(coordinate)
 		$("#inputLon").val(lonlat[0].toFixed(6))
 		$("#inputLat").val(lonlat[1].toFixed(6))
 		if (lonlat[0] < -180) {
